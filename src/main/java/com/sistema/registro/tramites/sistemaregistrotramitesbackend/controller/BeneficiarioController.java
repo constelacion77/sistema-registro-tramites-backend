@@ -2,7 +2,6 @@ package com.sistema.registro.tramites.sistemaregistrotramitesbackend.controller;
 
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.OpcionSelect;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.entity.Beneficiario;
-import com.sistema.registro.tramites.sistemaregistrotramitesbackend.repositorio.BeneficiarioRepositorio;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.service.BeneficiarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
