@@ -1,6 +1,7 @@
 package com.sistema.registro.tramites.sistemaregistrotramitesbackend.auth;
 
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.entity.Usuario;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,7 @@ public class JwtService {
         Instant ahora = Instant.now();
         return Jwts.builder()
                 .subject(usuario.getUserName())
-                .claim("rol", usuario.getRol())
+                .claim("rol", usuario.getRol().name())
                 .issuedAt(Date.from(ahora))
                 .expiration(Date.from(ahora.plusMillis(expiracion)))
                 .signWith(obtenerClave())

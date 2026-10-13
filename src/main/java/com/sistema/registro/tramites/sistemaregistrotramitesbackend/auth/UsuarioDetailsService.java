@@ -16,7 +16,7 @@ public class UsuarioDetailsService implements UserDetailsService {
         return usuarioService.obtenerUsuarioPorNombre(username)
                 .map(usuario -> User.withUsername(usuario.getUserName())
                         .password(usuario.getPassword())
-                        .roles(usuario.getRol())
+                        .roles(usuario.getRol().name())
                         .build())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
     }
