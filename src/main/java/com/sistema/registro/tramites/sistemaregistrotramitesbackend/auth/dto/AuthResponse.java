@@ -9,6 +9,6 @@ public record AuthResponse(
         String rol
 ) {
     public AuthResponse(String token, Usuario usuario) {
-        this(token, usuario.getUserName(), usuario.getEmail(), usuario.getRol());
+        this(token, usuario.getUserName(), usuario.getEmail(), usuario.getRol().name());
     }
 }
