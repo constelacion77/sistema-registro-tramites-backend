@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class BeneficiarioController {
     private BeneficiarioService service;
 
     @GetMapping("/beneficiarios")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Page<Beneficiario> obtenerBeneficiarios(
             @PageableDefault(size = 5)Pageable pageable
             ){
@@ -26,21 +28,25 @@ public class BeneficiarioController {
     }
 
     @PostMapping("/beneficiarios")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Beneficiario guardarNuevoBeneficiario(@RequestBody Beneficiario beneficiario){
         return service.guardar(beneficiario);
     }
 
     @PutMapping("/beneficiarios")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Beneficiario guardarBeneficiarioEditado(@RequestBody Beneficiario beneficiario){
         return service.guardar(beneficiario);
     }
 
     @DeleteMapping("/beneficiarios/{idBeneficiario}")
-    public ResponseEntity<Void> eliminarRepositorio(@PathVariable Long idBeneficiario){
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Void> eliminarBeneficiario(@PathVariable Long idBeneficiario){
         return service.eliminar(idBeneficiario);
     }
 
     @GetMapping("/beneficiarios/opciones")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<OpcionSelect> obtenerOpcionesBeneficiarios(){
         return service.obtenerOpcionesBeneficiario();
     }

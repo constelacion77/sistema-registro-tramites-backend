@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,21 +27,25 @@ public class DocumentoController {
     }
 
     @PostMapping("/documentos")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Documento guardarNuevoDocumento(@RequestBody Documento documento){
         return service.guardar(documento);
     }
 
     @PutMapping("/documentos")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Documento guardarDocumentoEditado(@RequestBody Documento documento){
         return service.guardar(documento);
     }
 
     @DeleteMapping("/documentos/{idDocumento}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> eliminarEmpleado(@PathVariable Long idDocumento){
         return service.eliminar(idDocumento);
     }
 
     @GetMapping("/documentos/opciones")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<OpcionSelect> obtenerOpcionesDocumentos(){
         return service.obtenerOpcionesDocumento();
     }

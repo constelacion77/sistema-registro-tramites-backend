@@ -1,6 +1,7 @@
 package com.sistema.registro.tramites.sistemaregistrotramitesbackend.entity;
 
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.auth.dto.RegistroRequest;
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.enums.Rol;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,8 +20,9 @@ public class Usuario {
     @Column(name = "password", unique = true, nullable = false)
     private String password;
 
-    @Column(name = "rol", nullable = false)
-    private String rol = "USER";
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Rol rol = Rol.USER;
 
     public Usuario() {
     }
@@ -29,7 +31,7 @@ public class Usuario {
         this.userName = request.userName();
         this.email = request.email();
         this.password = password;
-//        this.idRol = request.getR;
+        this.rol = Rol.USER;
     }
 
     public Long getId() {
@@ -64,11 +66,11 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 
