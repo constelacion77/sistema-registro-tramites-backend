@@ -1,8 +1,10 @@
 package com.sistema.registro.tramites.sistemaregistrotramitesbackend.service;
 
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.FiltroBusquedaDTO;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.TramiteRequest;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.entity.Tramite;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.repositorio.TramiteRepositorio;
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.specification.TramiteSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,10 +39,6 @@ public class TramiteService {
         return tramiteRepositorio.save(tramite);
     }
 
-    public Page<Tramite> obtenerTramites(Pageable pageable){
-        return tramiteRepositorio.findByFechaEliminoIsNullOrderByFechaGeneracionDesc(pageable);
-    }
-
     public ResponseEntity<Void> eliminarTramite(Long idTramite){
         Optional<Tramite> optionalTramite = tramiteRepositorio.findById(idTramite);
         if(optionalTramite.isEmpty()){
@@ -55,5 +52,9 @@ public class TramiteService {
 
     public TramiteRequest obtenerTramiteById(Long idTramite){
         return new TramiteRequest(tramiteRepositorio.findByIdAndFechaEliminoIsNull(idTramite));
+    }
+
+    public Page<Tramite> buscarTramitesPorCampos(Pageable pageable, FiltroBusquedaDTO filtro){
+        return tramiteRepositorio.findAll(TramiteSpecification.conFiltros(filtro), pageable);
     }
 }

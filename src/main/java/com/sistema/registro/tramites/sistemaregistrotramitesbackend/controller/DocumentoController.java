@@ -1,5 +1,6 @@
 package com.sistema.registro.tramites.sistemaregistrotramitesbackend.controller;
 
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.FiltroBusquedaDTO;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.OpcionSelect;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.entity.Documento;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.service.DocumentoService;
@@ -18,13 +19,6 @@ import java.util.List;
 public class DocumentoController {
     @Autowired
     private DocumentoService service;
-
-    @GetMapping("/documentos")
-    public Page<Documento> obtenerDocumentos(
-            @PageableDefault(size = 5)Pageable pageable
-            ){
-        return service.obtenerDocumentosActivos(pageable);
-    }
 
     @PostMapping("/documentos")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -48,5 +42,12 @@ public class DocumentoController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<OpcionSelect> obtenerOpcionesDocumentos(){
         return service.obtenerOpcionesDocumento();
+    }
+
+    @GetMapping("documentos/buscaqueda")
+    public Page<Documento> buscarDocumentos(
+            @PageableDefault(size = 5) Pageable pageable,
+            @ModelAttribute FiltroBusquedaDTO filtro){
+        return service.buscarDocumentosPorCampos(pageable, filtro);
     }
 }
