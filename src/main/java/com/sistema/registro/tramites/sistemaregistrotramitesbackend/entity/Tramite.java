@@ -7,9 +7,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@NamedQueries({
-   @NamedQuery(name = "Tramite.findActivos", query = "SELECT t FROM Tramite t WHERE t.fechaElimino  IS NULL")
-})
 @Table(name="Tramites")
 public class Tramite {
     @Id

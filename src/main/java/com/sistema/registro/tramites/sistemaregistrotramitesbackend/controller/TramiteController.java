@@ -1,11 +1,13 @@
 package com.sistema.registro.tramites.sistemaregistrotramitesbackend.controller;
 
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.FiltroBusquedaDTO;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.TramiteRequest;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.entity.Tramite;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.service.TramiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,13 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class TramiteController {
     @Autowired
     private TramiteService service;
-
-    @GetMapping("/tramites")
-    public Page<Tramite> obtenerTramites(
-            @PageableDefault(size = 5) Pageable pageable
-            ){
-        return service.obtenerTramites(pageable);
-    }
 
     @PostMapping("/tramites")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -46,5 +41,12 @@ public class TramiteController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public TramiteRequest obtenerTramitePorId(@PathVariable Long idTramite){
         return service.obtenerTramiteById(idTramite);
+    }
+
+    @GetMapping("/tramites/busqueda")
+    public Page<Tramite> buscarTramite(
+            @PageableDefault(size = 5, sort = "fechaGeneracion", direction = Sort.Direction.DESC)Pageable pageable,
+            @ModelAttribute FiltroBusquedaDTO filtro){
+        return service.buscarTramitesPorCampos(pageable, filtro);
     }
 }

@@ -1,8 +1,10 @@
 package com.sistema.registro.tramites.sistemaregistrotramitesbackend.service;
 
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.FiltroBusquedaDTO;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.OpcionSelect;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.entity.Documento;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.repositorio.DocumentoRepositorio;
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.specification.DocumentoSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +22,6 @@ public class DocumentoService {
 
     public Documento obtenerDocumentoPorId(Long idDocumento){
         return repositorio.getById(idDocumento);
-    }
-
-    public Page<Documento> obtenerDocumentosActivos(Pageable pageable){
-        return repositorio.findByFechaEliminoIsNullAndActivoIsTrue(pageable);
     }
 
     public Documento guardar(Documento entity){
@@ -51,5 +49,9 @@ public class DocumentoService {
         return repositorio.findByFechaEliminoIsNullAndActivoIsTrue()
                 .stream().map(d -> new OpcionSelect(d.getId(), d.getNombre()))
                 .toList();
+    }
+
+    public Page<Documento> buscarDocumentosPorCampos(Pageable pageable, FiltroBusquedaDTO filtro){
+        return repositorio.findAll(DocumentoSpecification.conFiltros(filtro), pageable);
     }
 }

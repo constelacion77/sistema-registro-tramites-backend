@@ -1,5 +1,6 @@
 package com.sistema.registro.tramites.sistemaregistrotramitesbackend.controller;
 
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.FiltroBusquedaDTO;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.OpcionSelect;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.entity.Beneficiario;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.service.BeneficiarioService;
@@ -18,14 +19,6 @@ import java.util.List;
 public class BeneficiarioController {
     @Autowired
     private BeneficiarioService service;
-
-    @GetMapping("/beneficiarios")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public Page<Beneficiario> obtenerBeneficiarios(
-            @PageableDefault(size = 5)Pageable pageable
-            ){
-        return service.obtenerBeneficiariosActivos(pageable);
-    }
 
     @PostMapping("/beneficiarios")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -49,5 +42,13 @@ public class BeneficiarioController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<OpcionSelect> obtenerOpcionesBeneficiarios(){
         return service.obtenerOpcionesBeneficiario();
+    }
+
+    @GetMapping("/beneficiarios/busqueda")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public Page<Beneficiario> buscarBeneficiarios(
+            @PageableDefault(size = 5)Pageable pageable,
+            @ModelAttribute FiltroBusquedaDTO filtro){
+        return service.buscarBeneficiarioPorCampos(pageable, filtro);
     }
 }

@@ -1,8 +1,10 @@
 package com.sistema.registro.tramites.sistemaregistrotramitesbackend.service;
 
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.FiltroBusquedaDTO;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.dto.OpcionSelect;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.entity.Beneficiario;
 import com.sistema.registro.tramites.sistemaregistrotramitesbackend.repositorio.BeneficiarioRepositorio;
+import com.sistema.registro.tramites.sistemaregistrotramitesbackend.specification.BeneficiarioSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +21,6 @@ public class BeneficiarioService {
 
     public Beneficiario obtenerBeneficiarioPorId(Long idBeneficiario){
         return repositorio.getById(idBeneficiario);
-    }
-
-    public Page<Beneficiario> obtenerBeneficiariosActivos(Pageable pageable){
-        return repositorio.findByFechaEliminoIsNull(pageable);
     }
 
     public Beneficiario guardar(Beneficiario entity){
@@ -50,5 +48,9 @@ public class BeneficiarioService {
         return repositorio.findByFechaEliminoIsNull().stream()
                 .map(b -> new OpcionSelect(b.getId(), b.getNombreCompleto()))
                 .toList();
+    }
+
+    public Page<Beneficiario> buscarBeneficiarioPorCampos(Pageable pageable, FiltroBusquedaDTO filtro){
+        return repositorio.findAll(BeneficiarioSpecification.conFiltros(filtro), pageable);
     }
 }
